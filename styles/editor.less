@@ -23,8 +23,31 @@ atom-text-editor, // <- remove when Shadow DOM can't be disabled
   }
 
   .bracket-matcher .region {
-    border-bottom: 1px solid @syntax-cursor-color;
-    box-sizing: border-box;
+    border-bottom: 0;
+    background: transparent;
+    width: 150%;
+  }
+
+  .bracket-matcher .region:after {
+    content: "";
+    -webkit-animation-name: bracketanimation;
+    -webkit-animation-duration: .5s;
+    border: 1px solid rgba(222, 149, 54, 0.2);
+    border-style: solid;
+    border-radius: 3px;
+    background-color: rgba(255, 217, 0, 0);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-origin: center;
+  }
+
+  .highlight.bracket-matcher:first-of-type {
+    opacity: .5;
+  }
+
+  .highlight.bracket-matcher:first-of-type .region:after {
+    animation: none;
   }
 
   .invisible-character {
@@ -93,5 +116,32 @@ atom-text-editor, // <- remove when Shadow DOM can't be disabled
   .gutter .line-number:after,
   .fold-marker:after {
     color: @syntax-gutter-text-color-selected;
+  }
+}
+// Bracket animation
+@bracket-bg-color: @hue-6-2;
+@bracket-border-color: @hue-6-2;
+
+@-webkit-keyframes bracketanimation {
+  from {
+    border-width: 3px;
+    border-color: @bracket-border-color;
+    background-color: @bracket-bg-color;
+    transform: scale(1.5, 1.02) translate3d(-25%, -10%, 0);
+  }
+
+  50% {
+    border-color: @bracket-border-color;
+  }
+
+  75% {
+    background-color: fade(@bracket-bg-color, 0);
+  }
+
+  to {
+    border-width: 1px;
+    border-color: fade(@bracket-border-color, 50%);
+    background-color: fade(@bracket-bg-color, 0);
+    transform: scale(1) translate3d(0, 0, 0);
   }
 }
